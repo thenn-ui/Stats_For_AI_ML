@@ -1,0 +1,22 @@
+Let G be a graph of n vertices. Let C be a maximal clique in the graph G of size k.
+
+
+
+Let G be a graph with treewidth tw(G).
+By definition, a tree decomposition of G is a tree T such that each node in T corresponds to a subset (bag) of vertices in G, satisfying the following conditions:
+•	Every vertex in G is in at least one bag.
+•	For every edge in G, there exists a bag containing both vertices of the edge.
+Let C be a maximal clique in G, and let v_1, v_2, ..., v_k be the vertices in C, where k is the size of the clique. Here, C is a subgraph of G.
+Since C is a clique, all pairs of vertices in C are connected by edges in G.
+Consider the bags in the tree decomposition. For each vertex v_i in C, there exists at least one bag in the tree decomposition containing v_i. Let's denote these bags as B_1, B_2, ..., B_k.
+Since each vertex v_i is in at least one bag, we have bags B_1, B_2, ..., B_k corresponding to the vertices in C.
+The size of the largest bag in the tree decomposition is at least max(|B_1|, |B_2|, ..., |B_k|).
+Without loss of generality, assume that |B_1| is the largest among |B_1|, |B_2|, ..., |B_k|.
+
+Therefore, |B_1| ≥ k.
+
+The treewidth (tw(G)) is defined as the size of the largest bag minus one, so tw(G) ≥ |B_1| - 1.
+
+Combining the inequalities, we get tw(G) ≥ |B_1| - 1 ≥ k - 1.
+
+Since k is the size of the maximal clique C, we have tw(G) ≥ k - 1.
