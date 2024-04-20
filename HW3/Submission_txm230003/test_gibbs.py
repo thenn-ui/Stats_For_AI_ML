@@ -76,10 +76,11 @@ def get_joint_probability(A, X, Z=None):
     for i in get_cliques(A).values():
         #print(i)
         prd = prd * psi(X[i[0]-1], X[i[1]-1])
-                
+    #print("indn prd = ", prd)            
 
     for i in range(len(X)):
         prd = prd * phi(X[i])
+        #print("i=",i, "prd=",prd, X)
 
     if Z is None:
         return prd
@@ -136,7 +137,7 @@ def gibbs(A, w, burnin, its, initialsample=None, roundrobin=True):
         # calculate the denominator
         for color in range(1,k+1):
             colorsetting = new_sample.copy()
-            #print("original colorsetting = ", colorsetting, "Node index = ", node)
+            #print("original colorsetting = ", colorsetting, "Node index = ", node, "new sample =", new_sample)
             colorsetting[node] = color
 
             denominator = denominator + get_joint_probability(A, colorsetting)
@@ -185,7 +186,7 @@ def gibbs(A, w, burnin, its, initialsample=None, roundrobin=True):
         
         samples.append(new_sample)
         node += 1
-        sampleindex += 1
+        sampleindex+=1
 
         
 
@@ -231,76 +232,18 @@ if __name__ == "__main__":
     # Problem set 1 question 1
     #
     starttime = datetime.datetime.now()
-    P1_1 = np.array([[0,1,0,0],
-                  [1,0,1,0],
-                  [0,1,0,1],
-                  [1,0,1,0]
+    P1_1 = np.array([[0,1,0],
+                     [1,0,1],
+                     [0,1,0]
                   ])
     w = [1,2,3]
 
-    burnin = 10000
-    its = 10000
+    burnin = -1
+    its = 1000
 
-    marginals, samples = gibbs(P1_1,w,burnin,its)
-    print("[============= P1_1 ==================]")
+    marginals, samples = gibbs(P1_1,w,burnin,its,initialsample=[3,2,1], roundrobin=True)
+
     pprint(marginals)
-    print("=======================================")
-    #########################################################3
-    #
-    # Problem set 1 question 2
-    #
+    #pprint(samples)
 
-    P1_2 = np.array([[0,1,1,1],
-                  [1,0,0,1],
-                  [1,0,0,1],
-                  [1,1,1,0]
-                  ])
-
-    w = [1,2,3,4]
-
-    valset = [2**6, 2**10, 2**14, 2**18]
-
-    burnin_vs_its = [[0 for i in range(len(valset))] for j in range(len(valset))]
-
-    for i in tqdm(range(len(valset))): # for burnin
-        for j in range(len(valset)): # for its
-            burnin = valset[i]
-            its = valset[j]
-            marginal_prob, samples = gibbs(P1_2,w,burnin,its,initialsample=[1,2,2,3])
-
-            # get the prob for a = 4
-            burnin_vs_its[i][j] = round(marginal_prob[0][3], 3)
-
-    print("Initial sample =", [1,2,2,3])
-    print("[=============== BURNIN VS ITS ================]")
-    pprint(burnin_vs_its)
-    print("===============================================")
-
-    burnin_vs_its = [[0 for i in range(len(valset))] for j in range(len(valset))]
-
-    for i in tqdm(range(len(valset))): # for burnin
-        for j in range(len(valset)): # for its
-            burnin = valset[i]
-            its = valset[j]
-            marginal_prob, samples = gibbs(P1_2,w,burnin,its,initialsample=[4,2,2,1])
-
-            # get the prob for a = 4
-            burnin_vs_its[i][j] = round(marginal_prob[0][3], 3)
-
-    print("Initial sample =", [4,2,2,1])
-    print("[=============== BURNIN VS ITS ================]")
-    pprint(burnin_vs_its)
-    print("===============================================")
-
-    fintime = datetime.datetime.now()
-    print("Exec time = ", fintime - starttime)
-
-# Does your answer depend on the initial choice of assignment used in your Gibbs sampling algorithm? Please refer write up for the answer
-# Rough work
-# No, the answer does not depend on the initial assignment of colors. The Gibbs sampler can travel throughout the statespace for the given graph
-# This is because the state space graph does not have disconnected components. Hence there is only one steady state distribution.
-
-# Yes, it depends on the initial assignment of colors. This is because the vertices in the given graph are highly correlated.
-# Hence, flipping one variable at a time does not let the gibbs sampler travel to states farther from the initial state.
-# Another reason is that the state space graph has lots of components that are disconnected. Hence traversal from one component to 
-# another is restricted. Using Gibbs sampling for this problem does not cover all possible coloring assignments
+    

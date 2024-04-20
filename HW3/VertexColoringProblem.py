@@ -89,9 +89,14 @@ def sumprod(A, w, its):
     for i in range(n):
         p.append(bp.prob(rvs[i]))
 
-    print("Testing - ", bp.partition())
+    probs = [0] * len(list(p[0].values()))
 
-    return bp.partition(), p
+    for d in p:
+        for k in d.keys():
+            probs[k] += d[k]
+            
+
+    return bp.partition(), [x / len(p) for x in probs]
 
 
 def maxprod(A, w, its):

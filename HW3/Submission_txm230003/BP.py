@@ -114,12 +114,18 @@ class BP:
             for x in self.points[rv]:
                 b = rvs_p[rv][x]
                 z -= b * log(b)
+
+        #print("========================")
+        #print(rvs_p)
+        #print("========================")
         
         #probs = [0] * len(list(rvs_p.values())[0].values())
 
-        '''for v in rvs_p.values():
-            for i in range(len(v.values())):
-                probs[i] += v[i]'''
+        #for v in rvs_p.values():
+        #    for i in range(len(v.values())):
+         #       probs[i] += v[i]
+
+        #probs = probs / len(list(rvs_p.values()))
 
         #return [x / len(list(rvs_p.values())) for x in probs]
         return z
